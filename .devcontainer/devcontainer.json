@@ -39,6 +39,9 @@
         "editor.defaultFormatter": "tamasfe.even-better-toml"
       },
       "eslint.experimental.useFlatConfig": true,
+      "eslint.options": {
+        "overrideConfigFile": "eslint.config.mjs"
+      },
       "evenBetterToml.schema.enabled": false
     },
     "vscode": {
