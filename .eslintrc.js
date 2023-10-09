@@ -1,16 +1,19 @@
 /** @type {import('eslint/lib/shared/types').ConfigData} */
 module.exports = {
+  root: true,
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    sourceType: "module",
     ecmaVersion: "latest",
-    project: ["./tsconfig.json"],
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    project: true,
   },
   plugins: ["@typescript-eslint"],
 
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
 
