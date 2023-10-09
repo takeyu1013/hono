@@ -32,6 +32,12 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
+      "extensions": [
+        "seatonjiang.gitmoji-vscode",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "tamasfe.even-better-toml"
+      ],
       "settings": {
         "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -44,13 +50,7 @@
           "overrideConfigFile": "eslint.config.mjs"
         },
         "evenBetterToml.schema.enabled": false
-      },
-      "extensions": [
-        "seatonjiang.gitmoji-vscode",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "tamasfe.even-better-toml"
-      ]
+      }
     }
   }
 
