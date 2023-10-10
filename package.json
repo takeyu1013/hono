@@ -1,18 +1,26 @@
 {
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "dev": "tsx src/index.ts"
   },
   "dependencies": {
+    "@hono/node-server": "^1.2.0",
+    "@prisma/client": "^5.4.2",
+    "globals": "^13.23.0",
     "hono": "^3.7.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230914.0",
+    "@types/node": "^20.8.4",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.51.0",
     "prettier": "^3.0.3",
+    "prisma": "^5.4.2",
+    "tsx": "^3.13.0",
     "typescript": "^5.2.2",
     "wrangler": "^3.9.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
