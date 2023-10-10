@@ -1,3 +1,4 @@
+import globals from "globals";
 import js from "@eslint/js";
 import tsEsLintPlugin from "@typescript-eslint/eslint-plugin";
 import tsEsLintParser from "@typescript-eslint/parser";
@@ -12,6 +13,9 @@ export default [
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.cts", "**/*.mts"],
     languageOptions: {
+      globals: {
+        ...globals.node,
+      },
       parser: tsEsLintParser,
       parserOptions: {
         project: true,
