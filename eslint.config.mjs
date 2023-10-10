@@ -25,6 +25,15 @@ export default [
       ...tsEsLintPlugin.configs["eslint-recommended"].rules,
       ...tsEsLintPlugin.configs["recommended-type-checked"].rules,
       "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ];
