@@ -1,11 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 import { Hono } from "hono";
-import { serve } from "@hono/node-server";
+import { handle } from "hono/vercel";
+
+export const runtime = "edge";
 
 const prisma = new PrismaClient();
-const app = new Hono();
 
-app.get("/", (c) => c.text("Hello Hono!"));
+const app = new Hono().basePath("/api");
+
+app.get("/hello", (c) => {
+  return c.json({
+    message: "Hello from Hono!",
+  });
+});
 
 const userRoute = app.get("/users", async (c) => {
   const users = await prisma.user.findMany();
@@ -27,4 +34,4 @@ const postRoute = app.get("/posts", async (c) => {
 
 export type AppType = typeof userRoute | typeof postRoute;
 
-serve(app);
+export const GET = handle(app);
