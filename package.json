@@ -1,24 +1,37 @@
 {
+  "name": "hono",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@hono/node-server": "^1.2.0",
     "@prisma/client": "^5.4.2",
     "globals": "^13.23.0",
-    "hono": "^3.7.2"
+    "hono": "^3.7.6",
+    "next": "13.5.4",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230914.0",
-    "@types/node": "^20.8.4",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
-    "eslint": "^8.51.0",
+    "@eslint/eslintrc": "^2.1.2",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "autoprefixer": "^10",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.4",
+    "postcss": "^8",
     "prettier": "^3.0.3",
     "prisma": "^5.4.2",
+    "tailwindcss": "^3",
     "tsx": "^3.13.0",
-    "typescript": "^5.2.2",
-    "wrangler": "^3.9.0"
+    "typescript": "^5"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
