@@ -1,9 +1,13 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import globals from "globals";
 import js from "@eslint/js";
 import tsEsLintPlugin from "@typescript-eslint/eslint-plugin";
 import tsEsLintParser from "@typescript-eslint/parser";
 
+const compat = new FlatCompat();
+
 export default [
+  ...compat.extends("next/core-web-vitals"),
   js.configs.recommended,
   {
     plugins: {
@@ -35,5 +39,8 @@ export default [
         },
       ],
     },
+  },
+  {
+    ignores: ["eslint.config.mjs"],
   },
 ];
