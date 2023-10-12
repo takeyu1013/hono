@@ -4,8 +4,6 @@ import { handle } from "hono/vercel";
 
 export const runtime = "edge";
 
-const prisma = new PrismaClient();
-
 const app = new Hono().basePath("/api");
 
 app.get("/hello", (c) => {
@@ -13,6 +11,8 @@ app.get("/hello", (c) => {
     message: "Hello from Hono!",
   });
 });
+
+const prisma = new PrismaClient();
 
 const userRoute = app.get("/users", async (c) => {
   const users = await prisma.user.findMany();
