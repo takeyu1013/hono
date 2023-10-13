@@ -36,24 +36,19 @@
         "seatonjiang.gitmoji-vscode",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "tamasfe.even-better-toml",
         "Prisma.prisma"
       ],
       "settings": {
         "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
-        "[toml]": {
-          "editor.defaultFormatter": "tamasfe.even-better-toml"
-        },
         "[prisma]": {
           "editor.defaultFormatter": "Prisma.prisma"
         },
         "eslint.experimental.useFlatConfig": true,
         "eslint.options": {
           "overrideConfigFile": "eslint.config.mjs"
-        },
-        "evenBetterToml.schema.enabled": false
+        }
       }
     }
   }
