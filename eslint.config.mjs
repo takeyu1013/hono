@@ -1,6 +1,5 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import globals from "globals";
-import js from "@eslint/js";
 import tsEsLintPlugin from "@typescript-eslint/eslint-plugin";
 import tsEsLintParser from "@typescript-eslint/parser";
 
@@ -8,14 +7,16 @@ const compat = new FlatCompat();
 
 export default [
   ...compat.extends("next/core-web-vitals"),
-  js.configs.recommended,
   {
-    plugins: {
-      "@typescript-eslint": tsEsLintPlugin,
+    rules: {
+      "import/no-anonymous-default-export": ["warn", { allowArray: true }],
     },
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.cts", "**/*.mts"],
+    plugins: {
+      "@typescript-eslint": tsEsLintPlugin,
+    },
     languageOptions: {
       globals: {
         ...globals.node,
@@ -39,8 +40,5 @@ export default [
         },
       ],
     },
-  },
-  {
-    ignores: ["eslint.config.mjs"],
   },
 ];
