@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { hc } from "hono/client";
+import { AppType } from "@/app/api/[...route]/route";
+import useSWR from "swr";
 
-export function Home() {
-  const [message, setMessage] = useState();
+export const Home = () => {
+  const { $get } = hc<AppType>("/").api.hello;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("/api/hello");
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { message } = await res.json();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setMessage(message);
-    };
-    void fetchData();
-  }, []);
-
-  if (!message) return <p>Loading...</p>;
+  const { data, isLoading } = useSWR(
+    "api-hello",
+    (() => async () => {
+      const res = await $get();
+      return await res.json();
+    })()
+  );
+  if (isLoading) return <p>Loading...</p>;
+  if (!data) return <p>failed to load data</p>;
+  const { message } = data;
 
   return <p>{message}</p>;
-}
+};

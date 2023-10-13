@@ -6,8 +6,8 @@ import { handle } from "hono/vercel";
 
 const app = new Hono().basePath("/api");
 
-app.get("/hello", (c) => {
-  return c.json({
+const helloRoute = app.get("/hello", (c) => {
+  return c.jsonT({
     message: "Hello from Hono!",
   });
 });
@@ -32,6 +32,6 @@ const postRoute = app.get("/posts", async (c) => {
   return c.jsonT(posts);
 });
 
-export type AppType = typeof userRoute | typeof postRoute;
+export type AppType = typeof helloRoute | typeof userRoute | typeof postRoute;
 
 export const GET = handle(app);
