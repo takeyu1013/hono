@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const app = new Hono().basePath("/api");
 
