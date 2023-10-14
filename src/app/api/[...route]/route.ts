@@ -7,25 +7,27 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 const api = "/api" as const;
 const app = new OpenAPIHono().basePath(api);
 
-const helloSchema = z
-  .object({
-    message: z.string().openapi({ example: "Hello" }),
-  })
-  .openapi("Hello");
-
-const helloRoute = app.openapi(
+const openApiRoute = app.openapi(
   createRoute({
     method: "get",
     path: "/hello",
     responses: {
       200: {
-        content: { "application/json": { schema: helloSchema } },
+        content: {
+          "application/json": {
+            schema: z
+              .object({
+                message: z.string().openapi({ example: "Hello" }),
+              })
+              .openapi("Hello"),
+          },
+        },
         description: "Retrieve the hello message",
       },
     },
   }),
-  (c) => {
-    return c.jsonT({
+  ({ jsonT }) => {
+    return jsonT({
       message: "Hello from Hono!",
     });
   }
@@ -39,24 +41,25 @@ app.doc31("/docs", {
 
 const prisma = new PrismaClient();
 
-const userRoute = app.get("/users", async (c) => {
-  const users = await prisma.user.findMany();
-  return c.jsonT(users);
-});
-const postRoute = app.get("/posts", async (c) => {
-  const posts = await prisma.post.findMany({
-    select: {
-      id: true,
-      authorId: true,
-      title: true,
-      content: true,
-      published: true,
-      viewCount: true,
-    },
+const route = app
+  .get("/users", async (c) => {
+    const users = await prisma.user.findMany();
+    return c.jsonT(users);
+  })
+  .get("/posts", async (c) => {
+    const posts = await prisma.post.findMany({
+      select: {
+        id: true,
+        authorId: true,
+        title: true,
+        content: true,
+        published: true,
+        viewCount: true,
+      },
+    });
+    return c.jsonT(posts);
   });
-  return c.jsonT(posts);
-});
 
-export type AppType = typeof helloRoute | typeof userRoute | typeof postRoute;
+export type AppType = typeof openApiRoute | typeof route;
 
 export const GET = handle(app);
