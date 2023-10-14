@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Post as PrismaPost, PrismaClient, User } from "@prisma/client";
 import { handle } from "hono/vercel";
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
@@ -7,31 +7,101 @@ import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 const api = "/api" as const;
 const app = new OpenAPIHono().basePath(api);
 
-const openApiRoute = app.openapi(
-  createRoute({
-    method: "get",
-    path: "/hello",
-    responses: {
-      200: {
-        content: {
-          "application/json": {
-            schema: z
-              .object({
-                message: z.string().openapi({ example: "Hello" }),
-              })
-              .openapi("Hello"),
+type Post = Partial<PrismaPost>;
+const prisma = new PrismaClient();
+
+const route = app
+  .openapi(
+    createRoute({
+      method: "get",
+      path: "/hello",
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              schema: z.object({
+                message: z.string(),
+              }),
+            },
           },
+          description: "Retrieve the hello message",
         },
-        description: "Retrieve the hello message",
       },
-    },
-  }),
-  ({ jsonT }) => {
-    return jsonT({
-      message: "Hello from Hono!",
-    });
-  }
-);
+    }),
+    ({ jsonT }) => {
+      return jsonT({
+        message: "Hello from Hono!",
+      });
+    }
+  )
+  .openapi(
+    createRoute({
+      method: "get",
+      path: "/users",
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              schema: (
+                z.object({
+                  id: z.number(),
+                  email: z.string(),
+                  name: z.string().nullable(),
+                } satisfies {
+                  [key in keyof User]: unknown;
+                }) satisfies z.ZodType<User>
+              ).array(),
+            },
+          },
+          description: "Retrieve the users",
+        },
+      },
+    }),
+    async ({ jsonT }) => {
+      const users = await prisma.user.findMany();
+      return jsonT(users);
+    }
+  )
+  .openapi(
+    createRoute({
+      method: "get",
+      path: "/posts",
+      responses: {
+        200: {
+          content: {
+            "application/json": {
+              schema: (
+                z.object({
+                  id: z.number(),
+                  title: z.string(),
+                  content: z.string().nullable(),
+                  published: z.boolean(),
+                  viewCount: z.number(),
+                  authorId: z.number().nullable(),
+                } satisfies {
+                  [key in keyof Post]: unknown;
+                }) satisfies z.ZodType<Post>
+              ).array(),
+            },
+          },
+          description: "Retrieve the posts",
+        },
+      },
+    }),
+    async ({ jsonT }) => {
+      const posts = await prisma.post.findMany({
+        select: {
+          id: true,
+          authorId: true,
+          title: true,
+          content: true,
+          published: true,
+          viewCount: true,
+        },
+      });
+      return jsonT(posts);
+    }
+  );
 
 app.doc31("/docs", {
   openapi: "3.1.0",
@@ -39,27 +109,6 @@ app.doc31("/docs", {
   servers: [{ url: api }],
 });
 
-const prisma = new PrismaClient();
-
-const route = app
-  .get("/users", async (c) => {
-    const users = await prisma.user.findMany();
-    return c.jsonT(users);
-  })
-  .get("/posts", async (c) => {
-    const posts = await prisma.post.findMany({
-      select: {
-        id: true,
-        authorId: true,
-        title: true,
-        content: true,
-        published: true,
-        viewCount: true,
-      },
-    });
-    return c.jsonT(posts);
-  });
-
-export type AppType = typeof openApiRoute | typeof route;
+export type AppType = typeof route;
 
 export const GET = handle(app);
