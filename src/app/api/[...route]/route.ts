@@ -1,15 +1,40 @@
 import { PrismaClient } from "@prisma/client";
-import { Hono } from "hono";
 import { handle } from "hono/vercel";
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 // export const runtime = "edge";
 
-const app = new Hono().basePath("/api");
+const api = "/api" as const;
+const app = new OpenAPIHono().basePath(api);
 
-const helloRoute = app.get("/hello", (c) => {
-  return c.jsonT({
-    message: "Hello from Hono!",
-  });
+const helloSchema = z
+  .object({
+    message: z.string().openapi({ example: "Hello" }),
+  })
+  .openapi("Hello");
+
+const helloRoute = app.openapi(
+  createRoute({
+    method: "get",
+    path: "/hello",
+    responses: {
+      200: {
+        content: { "application/json": { schema: helloSchema } },
+        description: "Retrieve the hello message",
+      },
+    },
+  }),
+  (c) => {
+    return c.jsonT({
+      message: "Hello from Hono!",
+    });
+  }
+);
+
+app.doc31("/docs", {
+  openapi: "3.1.0",
+  info: { title: "hono", version: "0.1.0" },
+  servers: [{ url: api }],
 });
 
 const prisma = new PrismaClient();

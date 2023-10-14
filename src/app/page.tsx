@@ -1,10 +1,10 @@
-import { Home } from "@/app/_components/home";
+import { Hello } from "./_components";
 
 export default function Index() {
   return (
     <main>
       <h1>Home</h1>
-      <Home />
+      <Hello />
     </main>
   );
 }

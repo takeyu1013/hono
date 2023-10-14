@@ -4,8 +4,8 @@ import { hc } from "hono/client";
 import { AppType } from "@/app/api/[...route]/route";
 import useSWR from "swr";
 
-export const Home = () => {
-  const { $get } = hc<AppType>("/").api.hello;
+export const Hello = () => {
+  const { $get } = hc<AppType>("/api").hello;
 
   const { data, isLoading } = useSWR(
     "api-hello",
