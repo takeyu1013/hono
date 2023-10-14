@@ -6,8 +6,9 @@ import { AppType } from "@/app/api/[...route]/route";
 
 export default function HelloExperimental() {
   const { $get } = hc<AppType>("/api").hello;
-
-  const { data } = useSWR(
+  const {
+    data: { message },
+  } = useSWR(
     "api-hello",
     (() => async () => {
       const res = await $get();
@@ -15,5 +16,6 @@ export default function HelloExperimental() {
     })(),
     { suspense: true }
   );
-  return <p>{data.message}</p>;
+
+  return <p>{message}</p>;
 }
