@@ -1,6 +1,8 @@
-import { Post as PrismaPost, PrismaClient, User } from "@prisma/client";
+import { Post as PrismaPost, User } from "@prisma/client";
 import { handle } from "hono/vercel";
 import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
+
+import { prisma } from "@/lib";
 
 // export const runtime = "edge";
 
@@ -8,7 +10,6 @@ const api = "/api" as const;
 const app = new OpenAPIHono().basePath(api);
 
 type Post = Partial<PrismaPost>;
-const prisma = new PrismaClient();
 
 const route = app
   .openapi(
