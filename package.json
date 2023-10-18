@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@hono/zod-openapi": "^0.7.2",
+    "@libsql/client": "^0.3.5",
+    "@prisma/adapter-libsql": "^5.4.3",
     "@prisma/client": "^5.4.2",
     "globals": "^13.23.0",
     "hono": "^3.7.6",
