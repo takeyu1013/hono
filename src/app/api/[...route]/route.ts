@@ -9,7 +9,7 @@ import { prisma } from "@/lib";
 const api = "/api" as const;
 const app = new OpenAPIHono().basePath(api);
 
-type Post = Partial<PrismaPost>;
+type Post = Omit<PrismaPost, keyof Pick<PrismaPost, "createdAt" | "updatedAt">>;
 
 const route = app
   .openapi(
