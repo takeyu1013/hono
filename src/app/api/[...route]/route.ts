@@ -1,6 +1,7 @@
-import { Post as PrismaPost, User } from "@prisma/client";
+import type { Post as PrismaPost, User } from "@prisma/client";
+
+import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { handle } from "hono/vercel";
-import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 
 import { prisma } from "@/lib";
 
@@ -33,7 +34,7 @@ const route = app
       return jsonT({
         message: "Hello from Hono!",
       });
-    }
+    },
   )
   .openapi(
     createRoute({
@@ -61,7 +62,7 @@ const route = app
     async ({ jsonT }) => {
       const users = await prisma.user.findMany();
       return jsonT(users);
-    }
+    },
   )
   .openapi(
     createRoute({
@@ -101,7 +102,7 @@ const route = app
         },
       });
       return jsonT(posts);
-    }
+    },
   );
 
 app.doc31("/docs", {

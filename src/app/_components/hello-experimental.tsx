@@ -2,7 +2,8 @@
 
 import { hc } from "hono/client";
 import useSWR from "swr";
-import { AppType } from "@/app/api/[...route]/route";
+
+import type { AppType } from "@/app/api/[...route]/route";
 
 export default function HelloExperimental() {
   const { $get } = hc<AppType>("/api").hello;
@@ -14,7 +15,7 @@ export default function HelloExperimental() {
       const res = await $get();
       return await res.json();
     })(),
-    { suspense: true }
+    { suspense: true },
   );
 
   return <p>{message}</p>;

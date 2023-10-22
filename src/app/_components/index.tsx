@@ -1,8 +1,9 @@
 "use client";
 
 import { hc } from "hono/client";
-import { AppType } from "@/app/api/[...route]/route";
 import useSWR from "swr";
+
+import type { AppType } from "@/app/api/[...route]/route";
 
 export const Hello = () => {
   const { $get } = hc<AppType>("/api").hello;
@@ -12,7 +13,7 @@ export const Hello = () => {
     (() => async () => {
       const res = await $get();
       return await res.json();
-    })()
+    })(),
   );
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>failed to load data</p>;
