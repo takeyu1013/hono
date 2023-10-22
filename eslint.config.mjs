@@ -1,7 +1,7 @@
 import { FlatCompat } from "@eslint/eslintrc";
-import globals from "globals";
 import tsEsLintPlugin from "@typescript-eslint/eslint-plugin";
 import tsEsLintParser from "@typescript-eslint/parser";
+import globals from "globals";
 
 const compat = new FlatCompat();
 
@@ -39,6 +39,7 @@ export default [
           destructuredArrayIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/consistent-type-imports": "warn",
     },
   },
 ];
