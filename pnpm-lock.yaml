@@ -23,6 +23,9 @@ dependencies:
   hono:
     specifier: ^3.8.3
     version: 3.8.3
+  lucia:
+    specifier: ^2.7.2
+    version: 2.7.2
   next:
     specifier: 13.5.6
     version: 13.5.6(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
@@ -979,6 +982,7 @@ packages:
 
   /@swagger-api/apidom-ns-json-schema-draft-4@0.79.0:
     resolution: {integrity: sha512-ipQuC/ouQa99hwJAyzsjhL7vjHlqFaibUfEEPHjNlMOp0mq0S9Yw/rX+liGe8bDe5vuK/RrS2WnJAUFeuFGO5w==}
+    requiresBuild: true
     dependencies:
       '@babel/runtime-corejs3': 7.23.2
       '@swagger-api/apidom-ast': 0.79.0
@@ -3303,6 +3307,10 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /lucia@2.7.2:
+    resolution: {integrity: sha512-fEsD5EW8k3JxEhp3Cor+ar3dAfSY/QAjN/gQArfxbp1bludR7zzyW6s/gmy1cuGvABASTuZxgwCyBz0Osbg6WA==}
+    dev: false
 
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
