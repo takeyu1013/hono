@@ -1,6 +1,7 @@
 import type { Post as PrismaPost, User } from "@prisma/client";
 
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
+import { getCookie } from "hono/cookie";
 import { handle } from "hono/vercel";
 
 import { prisma } from "@/lib";
@@ -30,8 +31,9 @@ const route = app
         },
       },
     }),
-    ({ jsonT }) => {
-      return jsonT({
+    (context) => {
+      console.log("state", getCookie(context, "state"));
+      return context.jsonT({
         message: "Hello from Hono!",
       });
     },
