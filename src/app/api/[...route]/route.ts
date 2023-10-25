@@ -4,7 +4,7 @@ import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { getCookie } from "hono/cookie";
 import { handle } from "hono/vercel";
 
-import { prisma } from "@/lib";
+import { client } from "@/lib";
 
 // export const runtime = "edge";
 
@@ -62,7 +62,7 @@ const route = app
       },
     }),
     async ({ jsonT }) => {
-      const users = await prisma.user.findMany();
+      const users = await client.user.findMany();
       return jsonT(users);
     },
   )
@@ -93,7 +93,7 @@ const route = app
       },
     }),
     async ({ jsonT }) => {
-      const posts = await prisma.post.findMany({
+      const posts = await client.post.findMany({
         select: {
           id: true,
           authorId: true,
