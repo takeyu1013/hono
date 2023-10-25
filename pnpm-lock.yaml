@@ -11,12 +11,15 @@ dependencies:
   '@libsql/client':
     specifier: ^0.3.6
     version: 0.3.6
+  '@lucia-auth/adapter-prisma':
+    specifier: ^3.0.2
+    version: 3.0.2(@prisma/client@5.5.1)(lucia@2.7.2)
   '@prisma/adapter-libsql':
-    specifier: ^5.5.0
-    version: 5.5.0(@libsql/client@0.3.6)
+    specifier: ^5.5.1
+    version: 5.5.1(@libsql/client@0.3.6)
   '@prisma/client':
-    specifier: ^5.5.0
-    version: 5.5.0(prisma@5.5.0)
+    specifier: ^5.5.1
+    version: 5.5.1(prisma@5.5.1)
   globals:
     specifier: ^13.23.0
     version: 13.23.0
@@ -83,8 +86,8 @@ devDependencies:
     specifier: ^3.0.3
     version: 3.0.3
   prisma:
-    specifier: ^5.5.0
-    version: 5.5.0
+    specifier: ^5.5.1
+    version: 5.5.1
   swagger-ui-react:
     specifier: ^5.9.1
     version: 5.9.1(@types/react-dom@18.2.14)(@types/react@18.2.31)(react-dom@18.2.0)(react@18.2.0)
@@ -743,6 +746,16 @@ packages:
     dev: false
     optional: true
 
+  /@lucia-auth/adapter-prisma@3.0.2(@prisma/client@5.5.1)(lucia@2.7.2):
+    resolution: {integrity: sha512-EyJWZene1/zasPwPctv8wwNErZt5mwwm5JATbhg+kXr3R8pbC7lJfVzDTAeeFClVH5k/FywRcsBl3JkPaNIcow==}
+    peerDependencies:
+      '@prisma/client': ^4.2.0 || ^5.0.0
+      lucia: ^2.0.0
+    dependencies:
+      '@prisma/client': 5.5.1(prisma@5.5.1)
+      lucia: 2.7.2
+    dev: false
+
   /@neon-rs/load@0.0.4:
     resolution: {integrity: sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw==}
     dev: false
@@ -859,20 +872,20 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@prisma/adapter-libsql@5.5.0(@libsql/client@0.3.6):
-    resolution: {integrity: sha512-OxW2MdwqyTX5JF0/CdsradEDL4JFx2GZMIN3flngTd+FNRWefE0/3rsSD/gdb3XP8ru4nduRD79WEXuCVEK6ng==}
+  /@prisma/adapter-libsql@5.5.1(@libsql/client@0.3.6):
+    resolution: {integrity: sha512-LYtXPNP0fA2Bv5m0A8uNCZ8bzDTPovyzz8DXefCzs9ekGRIx5uUcx/xz6HO97z9W2Lk7vqpQf5/mtuYTH5aQhw==}
     peerDependencies:
       '@libsql/client': ^0.3.5
     dependencies:
       '@libsql/client': 0.3.6
-      '@prisma/driver-adapter-utils': 5.5.0
+      '@prisma/driver-adapter-utils': 5.5.1
       async-mutex: 0.4.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@prisma/client@5.5.0(prisma@5.5.0):
-    resolution: {integrity: sha512-JiCj/h79PRawWiBVa4Ng4tBaKMrfJgUwuRrZi4NuQRd58gWIP4kEYMqIidpUrab3dU2NM617pWRG2avX+dh+Sg==}
+  /@prisma/client@5.5.1(prisma@5.5.1):
+    resolution: {integrity: sha512-Yvcwx1/Q0nIdv2jvH/4pyTRl5I+76/ef0C3xCrAkBKTIjXHiRptbyyK/+CWEaBY9yE98MIdi9gwZcR3C22eTuQ==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -882,11 +895,11 @@ packages:
         optional: true
     dependencies:
       '@prisma/engines-version': 5.5.0-19.475c616176945d72f4330c92801f0c5e6398dc0f
-      prisma: 5.5.0
+      prisma: 5.5.1
     dev: false
 
-  /@prisma/driver-adapter-utils@5.5.0:
-    resolution: {integrity: sha512-2H8Vr8L968h0Fgsf4vvp6VNBNc0wvkynzXAVzNq4kqBBL6sbohaQGtpke7X5GU0kQ1hMVm5zxhW46Ju8xnDJlg==}
+  /@prisma/driver-adapter-utils@5.5.1:
+    resolution: {integrity: sha512-bHbg1bK7jLIIXoOwNTF1CKiwbmNw6o/dSFDdkZYu68D8DgzwW6VEFc6+Fru4TFfTvxyLIpnpw2ZhJt3CONQG1w==}
     dependencies:
       debug: 4.3.4
     transitivePeerDependencies:
@@ -897,8 +910,8 @@ packages:
     resolution: {integrity: sha512-/1orOUq7I54ISYBJockYB15FmF/VkCBeFzYYkWyLtBl2tLlJWHmA3NEUBM+wSmXGLK78BmuSNHrLbf8bmXkukQ==}
     dev: false
 
-  /@prisma/engines@5.5.0:
-    resolution: {integrity: sha512-WX+8l4sJuWeS3A/5WqJpdBHp32UzUticiKwUWbFggcd6/sqGtCiiaFmXYmNw6Au2O6hjSX37Y07Vu2ZhP9cmWg==}
+  /@prisma/engines@5.5.1:
+    resolution: {integrity: sha512-6P4bTYb7WCWwHW50tsJvZTeZIM7HotuwDEY61wAX46b69eMbuXTsNB9dquEmwKaiG7ggk+igOoH8chSO3+/VkQ==}
     requiresBuild: true
 
   /@rushstack/eslint-patch@1.5.1:
@@ -982,7 +995,6 @@ packages:
 
   /@swagger-api/apidom-ns-json-schema-draft-4@0.79.0:
     resolution: {integrity: sha512-ipQuC/ouQa99hwJAyzsjhL7vjHlqFaibUfEEPHjNlMOp0mq0S9Yw/rX+liGe8bDe5vuK/RrS2WnJAUFeuFGO5w==}
-    requiresBuild: true
     dependencies:
       '@babel/runtime-corejs3': 7.23.2
       '@swagger-api/apidom-ast': 0.79.0
@@ -3812,13 +3824,13 @@ packages:
     hasBin: true
     dev: true
 
-  /prisma@5.5.0:
-    resolution: {integrity: sha512-QyMMh1WQiGU07Iz3Q8jd6y5KlomGLDVb4etkMWpQ4EmDAaY+zGgNHmBk2MfRPb0A+un1Ior1nZWZorfnKD6E5A==}
+  /prisma@5.5.1:
+    resolution: {integrity: sha512-6oln3L3/9kB9GqngIbSCpoXaZAk65y7hqEOj9g+9pkTYi/fVxCQzQ6ivnePVUoFhp/M1BBjexQepw1ODqnAC5Q==}
     engines: {node: '>=16.13'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 5.5.0
+      '@prisma/engines': 5.5.1
 
   /prismjs@1.27.0:
     resolution: {integrity: sha512-t13BGPUlFDR7wRB5kQDG4jjl7XeuH6jbJGt11JHPL96qwsEHNX2+68tFXqc1/k+/jALsbSWJKUOT/hcYAZ5LkA==}
