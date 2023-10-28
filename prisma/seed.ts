@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
-import { prisma } from "../src/lib";
+import { client } from "../src/lib";
 
 const userData: Prisma.UserCreateInput[] = [
   {
@@ -51,7 +51,7 @@ const userData: Prisma.UserCreateInput[] = [
 async function main() {
   console.log(`Start seeding ...`);
   for (const u of userData) {
-    const user = await prisma.user.create({
+    const user = await client.user.create({
       data: u,
     });
     console.log(`Created user with id: ${user.id}`);
@@ -61,10 +61,10 @@ async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await client.$disconnect();
   })
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
+    await client.$disconnect();
     process.exit(1);
   });

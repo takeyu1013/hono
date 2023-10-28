@@ -48,7 +48,7 @@ const route = app
             "application/json": {
               schema: (
                 z.object({
-                  id: z.number(),
+                  id: z.string(),
                   email: z.string(),
                   name: z.string().nullable(),
                 } satisfies {
@@ -76,12 +76,12 @@ const route = app
             "application/json": {
               schema: (
                 z.object({
-                  id: z.number(),
+                  id: z.string(),
                   title: z.string(),
                   content: z.string().nullable(),
                   published: z.boolean(),
                   viewCount: z.number(),
-                  authorId: z.number().nullable(),
+                  authorId: z.string().nullable(),
                 } satisfies {
                   [key in keyof Post]: unknown;
                 }) satisfies z.ZodType<Post>
