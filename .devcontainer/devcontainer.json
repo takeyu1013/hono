@@ -26,10 +26,8 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
-  "onCreateCommand": "curl -sSfL https://get.tur.so/install.sh | sed '/turso auth signup/d' | bash",
-
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "uname -a",
+  "postCreateCommand": "curl -sSfL https://get.tur.so/install.sh | sed '/turso auth signup/d' | bash",
 
   // Configure tool-specific properties.
   "customizations": {
