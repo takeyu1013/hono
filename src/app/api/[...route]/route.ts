@@ -48,7 +48,7 @@ const route = app
             "application/json": {
               schema: (
                 z.object({
-                  id: z.string(),
+                  id: z.string().cuid(),
                   email: z.string(),
                   name: z.string().nullable(),
                 } satisfies {
@@ -76,7 +76,7 @@ const route = app
             "application/json": {
               schema: (
                 z.object({
-                  id: z.string(),
+                  id: z.string().cuid(),
                   title: z.string(),
                   content: z.string().nullable(),
                   published: z.boolean(),
