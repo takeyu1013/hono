@@ -1,11 +1,11 @@
 import * as context from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/lib";
+import { auth } from "@/lib/lucia";
 
 const Page = async () => {
-  const authRequest = auth.handleRequest("GET", context);
-  const session = await authRequest.validate();
+  const { validate } = auth.handleRequest("GET", context);
+  const session = await validate();
   if (session) redirect("/");
   return (
     <>

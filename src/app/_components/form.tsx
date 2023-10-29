@@ -1,12 +1,14 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import { useRouter } from "next/navigation";
 
 const Form = ({
   children,
   action,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   action: string;
 }) => {
   const router = useRouter();
@@ -14,9 +16,9 @@ const Form = ({
     <form
       action={action}
       method="post"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+      onSubmit={async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
         const response = await fetch(action, {
           method: "POST",
           body: formData,
@@ -24,8 +26,6 @@ const Form = ({
         });
 
         if (response.status === 0) {
-          // redirected
-          // when using `redirect: "manual"`, response status 0 is returned
           return router.refresh();
         }
       }}

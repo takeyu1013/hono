@@ -1,11 +1,8 @@
 /// <reference types="lucia" />
 declare namespace Lucia {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  type Auth = import("@/lib").Auth;
+  type Auth = typeof import("@/lib/lucia").auth;
   type DatabaseUserAttributes = {
     name: string;
-    email: string;
   };
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  type DatabaseSessionAttributes = {};
+  type DatabaseSessionAttributes = Record<string, never>;
 }

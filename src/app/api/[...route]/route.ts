@@ -1,10 +1,9 @@
 import type { Post as PrismaPost, User } from "@prisma/client";
 
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { getCookie } from "hono/cookie";
 import { handle } from "hono/vercel";
 
-import { client } from "@/lib";
+import { client } from "@/lib/prisma";
 
 // export const runtime = "edge";
 
@@ -31,9 +30,8 @@ const route = app
         },
       },
     }),
-    (context) => {
-      console.log("state", getCookie(context, "state"));
-      return context.jsonT({
+    ({ jsonT }) => {
+      return jsonT({
         message: "Hello from Hono!",
       });
     },
@@ -49,7 +47,7 @@ const route = app
               schema: (
                 z.object({
                   id: z.string().cuid(),
-                  email: z.string(),
+                  email: z.string().nullable(),
                   name: z.string().nullable(),
                 } satisfies {
                   [key in keyof User]: unknown;
