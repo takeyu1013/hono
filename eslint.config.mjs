@@ -40,6 +40,12 @@ export default [
         },
       ],
       "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        {
+          checksVoidReturn: false,
+        },
+      ],
     },
   },
 ];
