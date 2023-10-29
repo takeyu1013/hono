@@ -39,7 +39,10 @@ export default [
           destructuredArrayIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/consistent-type-imports": "warn",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { disallowTypeAnnotations: false },
+      ],
       "@typescript-eslint/no-misused-promises": [
         "error",
         {
