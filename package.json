@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^0.8.1",
+    "@hono/zod-openapi": "^0.8.2",
     "@libsql/client": "^0.3.6",
     "@lucia-auth/adapter-prisma": "^3.0.2",
     "@lucia-auth/oauth": "^3.3.1",
