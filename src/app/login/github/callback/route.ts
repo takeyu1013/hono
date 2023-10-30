@@ -4,6 +4,7 @@ import { cookies, headers } from "next/headers";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 
 import { auth, githubAuth } from "@/lib/lucia";
+import { client } from "@/lib/prisma";
 
 export const GET = async (request: NextRequest) => {
   const storedState = cookies().get("github_oauth_state")?.value;
@@ -17,19 +18,16 @@ export const GET = async (request: NextRequest) => {
     const {
       getExistingUser,
       githubUser: { login },
-      createUser,
     } = await githubAuth.validateCallback(code);
-
-    const getUser = async () => {
+    const userId = await (async () => {
       const existingUser = await getExistingUser();
-      if (existingUser) return existingUser;
-      const user = await createUser({ attributes: { name: login } });
-      return user;
-    };
+      if (existingUser) return existingUser.userId;
+      const { id } = await client.user.create({ data: { name: login } });
+      return id;
+    })();
 
-    const user = await getUser();
     const session = await auth.createSession({
-      userId: user.userId,
+      userId,
       attributes: {},
     });
     const authRequest = auth.handleRequest(request.method, {
@@ -37,6 +35,7 @@ export const GET = async (request: NextRequest) => {
       headers,
     });
     authRequest.setSession(session);
+
     return new Response(null, { status: 302, headers: { Location: "/" } });
   } catch (error) {
     if (error instanceof OAuthRequestError) {
