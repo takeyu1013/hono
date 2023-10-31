@@ -7,13 +7,15 @@ import { auth, githubAuth } from "@/lib/lucia";
 import { client } from "@/lib/prisma";
 
 export const GET = async (request: NextRequest) => {
-  const storedState = cookies().get("github_oauth_state")?.value;
+  const cookie = cookies().get("github_oauth_state");
+  if (!cookie) return new Response(null, { status: 400 });
+  const { value: storedState } = cookie;
   const url = new URL(request.url);
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
-  if (!storedState || !state || storedState !== state || !code) {
+  if (!state || storedState !== state || !code)
     return new Response(null, { status: 400 });
-  }
+
   try {
     const {
       getExistingUser,
@@ -25,7 +27,6 @@ export const GET = async (request: NextRequest) => {
       const { id } = await client.user.create({ data: { name: login } });
       return id;
     })();
-
     const session = await auth.createSession({
       userId,
       attributes: {},
@@ -35,12 +36,10 @@ export const GET = async (request: NextRequest) => {
       headers,
     });
     authRequest.setSession(session);
-
-    return new Response(null, { status: 302, headers: { Location: "/" } });
+    return new Response(null, { status: 302, headers: { Location: "/login" } });
   } catch (error) {
-    if (error instanceof OAuthRequestError) {
+    if (error instanceof OAuthRequestError)
       return new Response(null, { status: 400 });
-    }
     return new Response(null, { status: 500 });
   }
 };
