@@ -1,4 +1,5 @@
 import { cookies, headers } from "next/headers";
+import Link from "next/link";
 
 import { auth } from "@/lib/lucia";
 import Form from "../_components/form";
@@ -29,9 +30,12 @@ const Page = async () => {
       ) : (
         <>
           <h1>Sign in</h1>
-          <a href="/login/github">Sign in with GitHub</a>
+          <div>
+            <a href="/login/github">Sign in with GitHub</a>
+          </div>
         </>
       )}
+      <Link href="/">Home</Link>
     </>
   );
 };
