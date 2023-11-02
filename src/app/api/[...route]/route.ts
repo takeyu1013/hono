@@ -1,8 +1,10 @@
 import type { Post as PrismaPost, User } from "@prisma/client";
 
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
+import { getCookie } from "hono/cookie";
 import { handle } from "hono/vercel";
 
+import { auth } from "@/lib/lucia";
 import { client } from "@/lib/prisma";
 
 // export const runtime = "edge";
@@ -29,11 +31,21 @@ const route = app
           description: "Retrieve the hello message",
         },
       },
+      security: [{ apiKeyAuth: [] }],
     }),
-    ({ jsonT }) => {
-      return jsonT({
-        message: "Hello from Hono!",
-      });
+    async (context) => {
+      const sessionId = getCookie(context, "auth_session");
+      if (!sessionId) return context.jsonT({ message: "Hello from Hono!" });
+      try {
+        const {
+          user: { name },
+        } = await auth.validateSession(sessionId);
+        return context.jsonT({
+          message: `Hello ${name} from Hono!`,
+        });
+      } catch {
+        return context.jsonT({ message: "Hello from Hono!" });
+      }
     },
   )
   .openapi(
