@@ -31,7 +31,7 @@ const route = app
           description: "Retrieve the hello message",
         },
       },
-      security: [{ apiKeyAuth: [] }],
+      security: [{ auth: [] }],
     }),
     async (context) => {
       const sessionId = getCookie(context, "auth_session");
@@ -116,6 +116,12 @@ const route = app
       return jsonT(posts);
     },
   );
+
+app.openAPIRegistry.registerComponent("securitySchemes", "auth", {
+  type: "apiKey",
+  in: "cookie",
+  name: "auth_session",
+});
 
 app.doc31("/docs", {
   openapi: "3.1.0",
