@@ -1,58 +1,50 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-  "name": "hono",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/javascript-node",
-  "containerUser": "node",
+	"name": "${localWorkspaceFolderBasename}",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/javascript-node",
+	"containerUser": "node",
+	"runArgs": ["--rm", "--name=${localWorkspaceFolderBasename}"],
+	"mounts": [
+		"source=${localEnv:HOME}/.netrc,target=/home/node/.netrc,type=bind,consistency=cached"
+	],
 
-  "runArgs": ["--rm", "--name=${localWorkspaceFolderBasename}"],
-  "mounts": [
-    {
-      "source": "${localEnv:HOME}/.gitconfig",
-      "target": "/home/node/.gitconfig",
-      "type": "bind"
-    },
-    {
-      "source": "${localEnv:HOME}/.git-credentials",
-      "target": "/home/node/.git-credentials",
-      "type": "bind"
-    }
-  ],
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/shyim/devcontainers-features/bun": {}
+	},
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
 
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "curl -sSfL https://get.tur.so/install.sh | sed '/turso auth signup/d' | bash",
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"seatonjiang.gitmoji-vscode",
+				"esbenp.prettier-vscode",
+				"biomejs.biome",
+				"prisma.prisma"
+			],
+			"settings": {
+				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"quickfix.biome": "explicit",
+					"source.organizeImports.biome": "explicit"
+				},
+				"[typescript][typescriptreact][javascript][javascriptreact][json][jsonc]": {
+					"editor.defaultFormatter": "biomejs.biome"
+				},
+				"[prisma]": { "editor.defaultFormatter": "prisma.prisma" }
+			}
+		}
+	}
 
-  // Configure tool-specific properties.
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "seatonjiang.gitmoji-vscode",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "Prisma.prisma"
-      ],
-      "settings": {
-        "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true,
-        "[prisma]": {
-          "editor.defaultFormatter": "Prisma.prisma"
-        },
-        "eslint.experimental.useFlatConfig": true,
-        "eslint.options": {
-          "overrideConfigFile": "eslint.config.mjs"
-        }
-      }
-    }
-  }
-
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root",
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
 }
