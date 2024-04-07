@@ -8,8 +8,8 @@ await (async () => {
 	const user = await prisma.user.create({
 		data: {
 			id: generateId(15),
-			email: "foo@example.com",
-			hashedPassword: await new Argon2id().hash("foo"),
+			email: "user@example.com",
+			hashedPassword: await new Argon2id().hash("string"),
 		},
 	});
 	console.log(user);
