@@ -5,6 +5,7 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaClient } from "@prisma/client";
 import { Lucia } from "lucia";
+import { Argon2id } from "oslo/password";
 
 const client = new PrismaClient();
 const adapter = new PrismaAdapter(client.session, client.user);
@@ -54,12 +55,50 @@ const route = createRoute({
 app.openapi(route, ({ json }) => {
 	return json("hello");
 });
+app.openapi(
+	createRoute({
+		method: "post",
+		path: "/login",
+		request: {
+			body: {
+				content: {
+					"application/json": {
+						schema: z.object({
+							email: z.string().email(),
+							password: z.string(),
+						}),
+					},
+				},
+			},
+		},
+		responses: {
+			200: {
+				content: {
+					"application/json": { schema: z.object({ token: z.string() }) },
+				},
+				description: "",
+			},
+		},
+	}),
+	async ({ req, json }) => {
+		const { email, password } = req.valid("json");
+		const user = await client.user.findUnique({ where: { email } });
+		if (!user) {
+			return json({ token: "" });
+		}
+		if (!(await new Argon2id().verify(user.hashedPassword, password))) {
+			return json({ token: "" });
+		}
+		const { id } = await lucia.createSession(user.id, {});
+		return json({ token: id });
+	},
+);
 
 // The OpenAPI documentation will be available at /docs
 const config = {
 	openapi: "3.1.0",
 	info: {
-		version: "1.0.0",
+		version: "0.1.0",
 		title: "API",
 	},
 } satisfies Parameters<OpenAPIHono["doc"]>["1"];
