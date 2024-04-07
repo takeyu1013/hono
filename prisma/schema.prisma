@@ -12,8 +12,9 @@ datasource db {
 
 model User {
   id             String    @id
-  email          String    @unique
-  hashedPassword String
+  email          String?   @unique
+  hashedPassword String?
+  github_id      Int?      @unique
   session        Session[]
 }
 
