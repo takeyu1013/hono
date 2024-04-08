@@ -6,7 +6,7 @@ import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import { PrismaClient } from "@prisma/client";
 import { GitHub, generateState } from "arctic";
 import { getCookie } from "hono/cookie";
-import { Lucia } from "lucia";
+import { Lucia, generateId } from "lucia";
 import { serializeCookie } from "oslo/cookie";
 import { Argon2id } from "oslo/password";
 
@@ -47,23 +47,40 @@ export const github = new GitHub(
 
 const app = new OpenAPIHono();
 
-const route = createRoute({
-	method: "get",
-	path: "/",
-	responses: {
-		200: {
-			content: {
-				"application/json": {
-					schema: z.string(),
+app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
+	type: "http",
+	scheme: "bearer",
+});
+
+app.openapi(
+	createRoute({
+		method: "get",
+		path: "/",
+		responses: {
+			200: {
+				content: {
+					"application/json": {
+						schema: z.string(),
+					},
 				},
+				description: "",
 			},
-			description: "",
 		},
+		security: [{ Bearer: [] }],
+	}),
+	async ({ req, json }) => {
+		const authorizationHeader = req.header("authorization");
+		const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+		if (!sessionId) {
+			return json("");
+		}
+		const { session } = await lucia.validateSession(sessionId);
+		if (!session) {
+			return json("");
+		}
+		return json("hello");
 	},
-});
-app.openapi(route, ({ json }) => {
-	return json("hello");
-});
+);
 app.openapi(
 	createRoute({
 		method: "post",
@@ -92,7 +109,7 @@ app.openapi(
 	async ({ req, json }) => {
 		const { email, password } = req.valid("json");
 		const user = await client.user.findUnique({ where: { email } });
-		if (!user) {
+		if (!user || !user.hashedPassword) {
 			return json({ token: "" });
 		}
 		if (!(await new Argon2id().verify(user.hashedPassword, password))) {
@@ -150,7 +167,31 @@ app.openapi(
 			return context.json({ token: "" });
 		}
 		const { accessToken } = await github.validateAuthorizationCode(code);
-		return context.json({ token: accessToken });
+		const githubUserResponse = await fetch("https://api.github.com/user", {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
+		const githubUser = z
+			.object({ id: z.number(), login: z.string() })
+			.parse(await githubUserResponse.json());
+		const existingUser = await client.user.findUnique({
+			where: { github_id: githubUser.id },
+		});
+		if (existingUser) {
+			const session = await lucia.createSession(existingUser.id, {});
+			return context.json({ token: session.id });
+		}
+		const id = generateId(15);
+		await client.user.create({
+			data: {
+				id,
+				github_id: githubUser.id,
+				email: githubUser.login,
+			},
+		});
+		const session = await lucia.createSession(id, {});
+		return context.json({ token: session.id });
 	},
 );
 
