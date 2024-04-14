@@ -1,4 +1,4 @@
-import { swaggerUI } from "@hono/swagger-ui";
+import { SwaggerUI, swaggerUI } from "@hono/swagger-ui";
 import { z } from "@hono/zod-openapi";
 import { createRoute } from "@hono/zod-openapi";
 import { OpenAPIHono } from "@hono/zod-openapi";
@@ -50,6 +50,16 @@ const app = new OpenAPIHono();
 app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
 	type: "http",
 	scheme: "bearer",
+});
+app.openAPIRegistry.registerComponent("securitySchemes", "OAuth2", {
+	type: "oauth2",
+	flows: {
+		authorizationCode: {
+			authorizationUrl: "http://localhost:3000/login/github",
+			tokenUrl: "http://localhost:3000/login/github/callback",
+			scopes: [],
+		},
+	},
 });
 
 app.openapi(
@@ -145,12 +155,19 @@ app.openapi(
 	createRoute({
 		method: "get",
 		path: "/login/github/callback",
+		request: {
+			query: z.object({
+				code: z.string(),
+				state: z.string(),
+			}),
+		},
 		responses: {
 			200: {
 				content: {
 					"application/json": {
 						schema: z.object({
-							token: z.string(),
+							access_token: z.string(),
+							token_type: z.string(),
 						}),
 					},
 				},
@@ -159,12 +176,10 @@ app.openapi(
 		},
 	}),
 	async (context) => {
-		const url = new URL(context.req.url);
-		const code = url.searchParams.get("code");
-		const state = url.searchParams.get("state");
+		const { code, state } = context.req.valid("query");
 		const storedState = getCookie(context, "github_oauth_state");
 		if (!code || !state || !storedState || state !== storedState) {
-			return context.json({ token: "" });
+			return context.json({ access_token: "", token_type: "bearer" });
 		}
 		const { accessToken } = await github.validateAuthorizationCode(code);
 		const githubUserResponse = await fetch("https://api.github.com/user", {
@@ -180,7 +195,7 @@ app.openapi(
 		});
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
-			return context.json({ token: session.id });
+			return context.json({ access_token: session.id, token_type: "bearer" });
 		}
 		const id = generateId(15);
 		await client.user.create({
@@ -191,7 +206,7 @@ app.openapi(
 			},
 		});
 		const session = await lucia.createSession(id, {});
-		return context.json({ token: session.id });
+		return context.json({ access_token: session.id, token_type: "bearer" });
 	},
 );
 
