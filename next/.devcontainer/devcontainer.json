@@ -1,0 +1,34 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/marcosgomesneto/bun-devcontainers/tree/main/src/basic-bun
+{
+  "name": "${localWorkspaceFolderBasename}",
+  "dockerFile": "Dockerfile",
+  "runArgs": ["--rm", "--name=${localWorkspaceFolderBasename}"],
+  "mounts": [
+    "source=${localEnv:HOME}/.netrc,target=/home/bun/.netrc,type=bind,consistency=cached"
+  ],
+
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "oven.bun-vscode",
+        "seatonjiang.gitmoji-vscode",
+        "esbenp.prettier-vscode",
+        "biomejs.biome"
+      ],
+      "settings": {
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnSave": true,
+        "[markdown][jsonc]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  }
+}
