@@ -2,12 +2,15 @@
 // README at: https://github.com/marcosgomesneto/bun-devcontainers/tree/main/src/basic-bun
 {
   "name": "${localWorkspaceFolderBasename}",
-  "dockerFile": "Dockerfile",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
+  "containerUser": "node",
   "runArgs": ["--rm", "--name=${localWorkspaceFolderBasename}"],
   "mounts": [
-    "source=${localEnv:HOME}/.netrc,target=/home/bun/.netrc,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.netrc,target=/home/node/.netrc,type=bind,consistency=cached"
   ],
-
+  "features": {
+    "ghcr.io/michidk/devcontainers-features/bun": {}
+  },
   // Configure tool-specific properties.
   "customizations": {
     // Configure properties specific to VS Code.
