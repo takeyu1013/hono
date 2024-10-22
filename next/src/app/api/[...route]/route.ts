@@ -1,8 +1,9 @@
-import { auth } from "@/lib/auth";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { handle } from "hono/vercel";
 import { object, string } from "zod";
+
+import { auth } from "@/lib/auth";
 
 const app = new OpenAPIHono().basePath("/api");
 
