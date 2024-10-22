@@ -20,7 +20,8 @@
         "oven.bun-vscode",
         "seatonjiang.gitmoji-vscode",
         "esbenp.prettier-vscode",
-        "biomejs.biome"
+        "biomejs.biome",
+        "Prisma.prisma"
       ],
       "settings": {
         "editor.codeActionsOnSave": {
@@ -30,7 +31,8 @@
         "editor.formatOnSave": true,
         "[markdown][jsonc]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
-        }
+        },
+        "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" }
       }
     }
   }
