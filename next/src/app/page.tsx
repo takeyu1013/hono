@@ -2,6 +2,7 @@ import { Text } from "@mantine/core";
 import { hc } from "hono/client";
 
 import type { route } from "@/app/api/[...route]/route";
+import { SignUp } from "@/component/sign-up";
 
 export default async function Home() {
 	const {
@@ -14,6 +15,7 @@ export default async function Home() {
 	return (
 		<main>
 			<Text>{message}</Text>
+			<SignUp />
 		</main>
 	);
 }
