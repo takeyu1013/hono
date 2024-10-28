@@ -28,7 +28,7 @@ export const SignUp = () => {
 			<button
 				type="button"
 				onClick={async () => {
-					const { data, error } = await signUp.email({ email, password, name });
+					const { data } = await signUp.email({ email, password, name });
 					console.log(data?.session.id);
 				}}
 			>
