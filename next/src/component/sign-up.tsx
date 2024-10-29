@@ -1,39 +1,45 @@
 "use client";
 
-import { signUp } from "@/lib/auth-client";
-import { useState } from "react";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { Button, Stack, TextInput } from "@mantine/core";
+import { useActionState } from "react";
+
+import type { z } from "zod";
+
+import { signUp } from "@/lib/action";
+import type { schema } from "@/lib/zod";
 
 export const SignUp = () => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [name, setName] = useState("");
+	const [lastResult, action] = useActionState(signUp, undefined);
+	const [form, fields] = useForm({
+		defaultValue: { email: "", password: "", name: "" } satisfies z.infer<
+			typeof schema
+		>,
+		lastResult,
+	});
 
 	return (
-		<div>
-			<input
-				type="name"
-				value={name}
-				onChange={(event) => setName(event.target.value)}
+		<Stack
+			renderRoot={(props) => (
+				<form {...props} {...getFormProps(form)} action={action} />
+			)}
+		>
+			<TextInput
+				{...getInputProps(fields.email, { type: "email" })}
+				key={fields.email.key}
+				label="Email"
 			/>
-			<input
-				type="password"
-				value={password}
-				onChange={(event) => setPassword(event.target.value)}
+			<TextInput
+				{...getInputProps(fields.password, { type: "password" })}
+				key={fields.password.key}
+				label="Password"
 			/>
-			<input
-				type="email"
-				value={email}
-				onChange={(event) => setEmail(event.target.value)}
+			<TextInput
+				{...getInputProps(fields.name, { type: "text" })}
+				key={fields.name.key}
+				label="Name"
 			/>
-			<button
-				type="button"
-				onClick={async () => {
-					const { data } = await signUp.email({ email, password, name });
-					console.log(data?.session.id);
-				}}
-			>
-				Sign Up
-			</button>
-		</div>
+			<Button type="submit">Sign up</Button>
+		</Stack>
 	);
 };

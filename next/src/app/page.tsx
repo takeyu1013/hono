@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Container, Text } from "@mantine/core";
 import { hc } from "hono/client";
 
 import type { route } from "@/app/api/[...route]/route";
@@ -14,8 +14,10 @@ export default async function Home() {
 
 	return (
 		<main>
-			<Text>{message}</Text>
-			<SignUp />
+			<Container>
+				<Text>{message}</Text>
+				<SignUp />
+			</Container>
 		</main>
 	);
 }
