@@ -1,4 +1,4 @@
-import { MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 
@@ -13,7 +13,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="ja">
+		<html lang="ja" suppressHydrationWarning>
+			<head>
+				<ColorSchemeScript />
+			</head>
 			<body>
 				<MantineProvider>{children}</MantineProvider>
 			</body>
