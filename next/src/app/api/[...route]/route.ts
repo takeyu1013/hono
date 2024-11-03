@@ -31,11 +31,12 @@ export const route = app.openapi(
 		],
 	}),
 	async ({ json, req }) => {
-		const headers = ((authorization: string) => {
-			const headers = new Headers();
-			headers.set("authorization", authorization);
-			return headers;
-		})(req.header("authorization") ?? "");
+		const { headers } = req.raw;
+		// const headers = ((authorization: string) => {
+		// 	const headers = new Headers();
+		// 	headers.set("authorization", authorization);
+		// 	return headers;
+		// })(req.header("authorization") ?? "");
 		const session = await auth.api.getSession({
 			headers,
 		});
