@@ -5,3 +5,8 @@ export const schema = object({
 	password: string(),
 	name: string(),
 });
+
+export const logInSchema = object({
+	email: string().email(),
+	password: string(),
+});
