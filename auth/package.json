@@ -1,0 +1,41 @@
+{
+	"name": "auth",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"upi": "bunx npm-check-updates -i"
+	},
+	"dependencies": {
+		"@auth/core": "^0.37.3",
+		"@auth/prisma-adapter": "^2.7.3",
+		"@hono/auth-js": "^1.0.15",
+		"@hono/swagger-ui": "^0.4.1",
+		"@hono/zod-openapi": "^0.17.0",
+		"@mantine/core": "^7.13.5",
+		"@mantine/hooks": "^7.13.5",
+		"@prisma/client": "^5.22.0",
+		"bcrypt": "^5.1.1",
+		"hono": "^4.6.9",
+		"next": "15.0.3",
+		"next-auth": "^5.0.0-beta.25",
+		"react": "19.0.0-rc-66855b96-20241106",
+		"react-dom": "19.0.0-rc-66855b96-20241106",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/bcrypt": "^5.0.2",
+		"@types/node": "^22",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"postcss": "^8.4.49",
+		"postcss-preset-mantine": "^1.17.0",
+		"postcss-simple-vars": "^7.0.1",
+		"prisma": "^5.22.0",
+		"typescript": "^5"
+	}
+}
