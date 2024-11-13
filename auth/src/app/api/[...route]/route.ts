@@ -1,9 +1,4 @@
-// import {
-// 	type AuthConfig,
-// 	authHandler,
-// 	initAuthConfig,
-// 	verifyAuth,
-// } from "@hono/auth-js";
+// import { authHandler, initAuthConfig, verifyAuth } from "@hono/auth-js";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { handle } from "hono/vercel";
@@ -36,14 +31,15 @@ export const route = app.openapi(
 	},
 );
 
-app.get("/ui", swaggerUI({ url: "/api/doc" }));
 app.doc("/doc", { info: { title: "API", version: "0.1.0" }, openapi: "3.1.0" });
+app.get("/ui", swaggerUI({ url: "/api/doc" }));
+
 // app.use(
 // 	"*",
-// 	initAuthConfig(() => authConfig as AuthConfig),
+// 	initAuthConfig(() => authConfig),
 // );
-// app.use("/api/auth/*", authHandler());
-// app.use("/api/*", verifyAuth());
+// app.use("/auth/*", authHandler());
+// app.use("/*", verifyAuth());
 
 export const GET = handle(app);
 export const POST = handle(app);

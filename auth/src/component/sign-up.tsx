@@ -24,7 +24,7 @@ export const SignUp = () => {
 				Password
 				<input name="password" type="password" />
 			</label>
-			<button type="submit">Sign In</button>
+			<button type="submit">Sign Up</button>
 		</form>
 	);
 };

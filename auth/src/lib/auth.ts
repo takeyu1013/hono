@@ -1,23 +1,15 @@
+// import type { AuthConfig } from "@auth/core";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcrypt";
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+// import Credentials from "@auth/core/providers/credentials";
+import { object, string } from "zod";
 
 import { prisma } from "./prisma";
 
 export const authConfig = {
 	adapter: PrismaAdapter(prisma),
-	callbacks: {
-		session({ session, token }) {
-			if (session.user && token.sub) {
-				console.log("session: ", session);
-				const { user } = session;
-				return { ...session, user: { ...user, id: token.sub } };
-			}
-			return session;
-		},
-	},
-	secret: process.env.AUTH_SECRET,
 	providers: [
 		Credentials({
 			credentials: {
@@ -28,24 +20,33 @@ export const authConfig = {
 				if (!credentials) {
 					return null;
 				}
-				const { email, password } = credentials;
+				const { data, success } = await object({
+					email: string().email(),
+					password: string().min(6),
+				}).safeParseAsync(credentials);
+				if (!success) {
+					return null;
+				}
+				const { email, password } = data;
 				const user = await prisma.user.findFirst({
-					where: { email: email as string },
+					where: { email },
 				});
 				if (!user) {
 					return null;
 				}
 				const isValidPassword = await compare(
-					password as string,
+					password,
 					user.passwordDigest ?? "",
 				);
 				if (!isValidPassword) {
 					return null;
 				}
-				console.log(user);
 				return user;
 			},
 		}),
 	],
+	secret: process.env.AUTH_SECRET,
+	session: { strategy: "jwt" },
+	// } satisfies AuthConfig;
 } satisfies NextAuthConfig;
 export const { auth, handlers, signIn, signOut } = NextAuth(authConfig);
