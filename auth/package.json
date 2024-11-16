@@ -13,7 +13,7 @@
 		"@auth/core": "^0.37.3",
 		"@auth/prisma-adapter": "^2.7.3",
 		"@hono/swagger-ui": "^0.4.1",
-		"@hono/zod-openapi": "^0.17.0",
+		"@hono/zod-openapi": "^0.17.1",
 		"@mantine/core": "^7.14.0",
 		"@mantine/hooks": "^7.14.0",
 		"@prisma/client": "^5.22.0",
@@ -21,8 +21,8 @@
 		"hono": "^4.6.10",
 		"next": "15.0.3",
 		"next-auth": "^5.0.0-beta.25",
-		"react": "19.0.0-rc-66855b96-20241106",
-		"react-dom": "19.0.0-rc-66855b96-20241106",
+		"react": "19.0.0-rc.1",
+		"react-dom": "19.0.0-rc.1",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
