@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { handle } from "hono/vercel";
@@ -21,9 +22,18 @@ export const route = app.openapi(
 			},
 		},
 	}),
-	async ({ json }) => {
+	async ({ json, req }) => {
+		const session = await auth();
+		console.log(session);
+		console.log(req.raw.headers);
+		const email = session?.user?.email;
+		if (!email) {
+			return json({
+				message: "Hello from Hono!",
+			});
+		}
 		return json({
-			message: "Hello from Hono!",
+			message: `Hello from Hono, ${email}!`,
 		});
 	},
 );
