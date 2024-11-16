@@ -9,7 +9,7 @@ app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
 	type: "http",
 	scheme: "bearer",
 });
-export const route = app.openapi(
+const route = app.openapi(
 	createRoute({
 		method: "get",
 		path: "/hello",
@@ -24,8 +24,6 @@ export const route = app.openapi(
 	}),
 	async ({ json, req }) => {
 		const session = await auth();
-		console.log(session);
-		console.log(req.raw.headers);
 		const email = session?.user?.email;
 		if (!email) {
 			return json({
@@ -43,3 +41,4 @@ app.get("/ui", swaggerUI({ url: "/api/doc" }));
 
 export const GET = handle(app);
 export const POST = handle(app);
+export type AppType = typeof route;

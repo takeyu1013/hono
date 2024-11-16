@@ -1,13 +1,14 @@
 import { Text } from "@mantine/core";
 import { hc } from "hono/client";
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 
-import { Hello } from "@/component/hello";
+import { ErrorTest } from "@/component/error-test";
 import { SignIn } from "@/component/sign-in";
 import { SignUp } from "@/component/sign-up";
 import { auth } from "@/lib/auth";
 
-import type { route } from "./api/[...route]/route";
+import type { AppType } from "./api/[...hono]/route";
 
 export default async function Home() {
 	const session = await auth();
@@ -18,7 +19,7 @@ export default async function Home() {
 		api: {
 			hello: { $get },
 		},
-	} = hc<typeof route>("http://localhost:3000/");
+	} = hc<AppType>("http://localhost:3000/");
 	const { message } = await (await $get({}, { headers: { cookie } })).json();
 
 	return (
@@ -28,7 +29,9 @@ export default async function Home() {
 			<Text>{message}</Text>
 			<SignUp />
 			<SignIn />
-			<Hello />
+			<Suspense fallback={<Text>Loading...</Text>}>
+				<ErrorTest />
+			</Suspense>
 		</main>
 	);
 }

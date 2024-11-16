@@ -1,10 +1,6 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-// import { SessionProvider } from "next-auth/react";
-// import { auth } from "@/lib/auth";
-
-// import { Provider } from "@/component/provider";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -22,10 +18,7 @@ export default async function RootLayout({
 				<ColorSchemeScript />
 			</head>
 			<body>
-				<MantineProvider>
-					{/* <Provider>{children}</Provider> */}
-					{children}
-				</MantineProvider>
+				<MantineProvider>{children}</MantineProvider>
 			</body>
 		</html>
 	);
