@@ -12,7 +12,6 @@
 	"dependencies": {
 		"@auth/core": "^0.37.3",
 		"@auth/prisma-adapter": "^2.7.3",
-		"@hono/auth-js": "^1.0.15",
 		"@hono/swagger-ui": "^0.4.1",
 		"@hono/zod-openapi": "^0.17.0",
 		"@mantine/core": "^7.14.0",
