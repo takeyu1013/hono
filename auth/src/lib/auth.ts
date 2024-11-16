@@ -1,9 +1,7 @@
-// import type { AuthConfig } from "@auth/core";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcrypt";
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-// import Credentials from "@auth/core/providers/credentials";
 import { object, string } from "zod";
 
 import { prisma } from "./prisma";
@@ -45,8 +43,6 @@ export const authConfig = {
 			},
 		}),
 	],
-	secret: process.env.AUTH_SECRET,
 	session: { strategy: "jwt" },
-	// } satisfies AuthConfig;
 } satisfies NextAuthConfig;
 export const { auth, handlers, signIn, signOut } = NextAuth(authConfig);
