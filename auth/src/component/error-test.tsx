@@ -4,6 +4,7 @@ import type { AppType } from "@/app/api/[...hono]/route";
 import { auth } from "@/lib/auth";
 import { hc } from "hono/client";
 import { cookies } from "next/headers";
+import { CustomToaster } from "./custom-toaster";
 
 export const ErrorTest = async () => {
 	try {
@@ -22,6 +23,6 @@ export const ErrorTest = async () => {
 
 		return <Text>{message}</Text>;
 	} catch (error) {
-		return <Text>{`${error}`}</Text>;
+		return <CustomToaster message={`${error}`} />;
 	}
 };
