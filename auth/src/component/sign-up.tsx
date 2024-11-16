@@ -1,30 +1,15 @@
-import { prisma } from "@/lib/prisma";
-import { hash } from "bcrypt";
+"use client";
+
+import { Button, Stack, TextInput } from "@mantine/core";
+
+import { signUp } from "@/lib/action";
 
 export const SignUp = () => {
 	return (
-		<form
-			action={async (formData) => {
-				"use server";
-				const email = formData.get("email");
-				const password = formData.get("password");
-				await prisma.user.create({
-					data: {
-						email: `${email}`,
-						passwordDigest: await hash(`${password}`, 10),
-					},
-				});
-			}}
-		>
-			<label>
-				Email
-				<input name="email" type="email" />
-			</label>
-			<label>
-				Password
-				<input name="password" type="password" />
-			</label>
-			<button type="submit">Sign Up</button>
-		</form>
+		<Stack renderRoot={(props) => <form {...props} action={signUp} />}>
+			<TextInput label="Email" name="email" type="email" />
+			<TextInput label="Password" name="password" type="password" />
+			<Button type="submit">Sign Up</Button>
+		</Stack>
 	);
 };

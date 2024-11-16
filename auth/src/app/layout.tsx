@@ -1,4 +1,5 @@
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 

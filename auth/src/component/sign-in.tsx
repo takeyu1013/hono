@@ -1,22 +1,14 @@
-import { signIn } from "@/lib/auth";
+"use client";
+
+import { logIn } from "@/lib/action";
+import { Button, Stack, TextInput } from "@mantine/core";
 
 export const SignIn = () => {
 	return (
-		<form
-			action={async (formData) => {
-				"use server";
-				await signIn("credentials", formData);
-			}}
-		>
-			<label>
-				Email
-				<input name="email" type="email" />
-			</label>
-			<label>
-				Password
-				<input name="password" type="password" />
-			</label>
-			<button type="submit">Sign In</button>
-		</form>
+		<Stack renderRoot={(props) => <form {...props} action={logIn} />}>
+			<TextInput label="Email" name="email" type="email" />
+			<TextInput label="Password" name="password" type="password" />
+			<Button type="submit">Sign In</Button>
+		</Stack>
 	);
 };
