@@ -1,12 +1,12 @@
 "use client";
 
 import { Text } from "@mantine/core";
-import useSWRImmutable from "swr/immutable";
+import useSWR from "swr";
 
 import { logOut } from "@/lib/action";
 
 export default function Page() {
-	useSWRImmutable("sign-out", async () => {
+	useSWR("/api/auth/signout", async () => {
 		await logOut();
 	});
 	return <Text>Loading...</Text>;
