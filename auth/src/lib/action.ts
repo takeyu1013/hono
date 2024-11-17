@@ -2,6 +2,8 @@
 
 import { hash } from "bcrypt";
 
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { signIn, signOut } from "./auth";
 import { prisma } from "./prisma";
 
@@ -21,5 +23,10 @@ export const logIn = async (formData: FormData) => {
 };
 
 export const logOut = async () => {
-	await signOut();
+	await signOut({ redirectTo: "/" });
+};
+
+export const redirectWithError = async (message: string) => {
+	(await cookies()).set("error", message, { maxAge: 1 });
+	redirect("/");
 };

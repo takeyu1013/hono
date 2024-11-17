@@ -10,10 +10,9 @@ export const ErrorTest = async () => {
 	try {
 		const session = await auth();
 		if (!session) {
-			throw Error("cannot get session");
+			throw Error("Cannot get session");
 		}
-		const clientCookies = await cookies();
-		const cookie = clientCookies.toString();
+		const cookie = (await cookies()).toString();
 		const {
 			api: {
 				hello: { $get },

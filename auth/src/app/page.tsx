@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { Container, Stack, Text } from "@mantine/core";
 import { hc } from "hono/client";
 import { cookies } from "next/headers";
@@ -5,17 +6,16 @@ import { Suspense } from "react";
 
 import { ErrorTest } from "@/component/error-test";
 import { SignIn } from "@/component/sign-in";
-import { SignUp } from "@/component/sign-up";
-import { auth } from "@/lib/auth";
-
 import { SignOut } from "@/component/sign-out";
+import { SignUp } from "@/component/sign-up";
+
 import type { AppType } from "./api/[...hono]/route";
 
 export default async function Home() {
 	const session = await auth();
 
-	const clientCookies = await cookies();
-	const cookie = clientCookies.toString();
+	const cookieStore = await cookies();
+	const cookie = cookieStore.toString();
 	const {
 		api: {
 			hello: { $get },
@@ -27,7 +27,7 @@ export default async function Home() {
 		<Container component="main">
 			<Stack>
 				<Text>session: {session?.user?.email}</Text>
-				<Text>token: {clientCookies.get("authjs.session-token")?.value}</Text>
+				<Text>token: {cookieStore.get("authjs.session-token")?.value}</Text>
 				<Text>{message}</Text>
 				<SignUp />
 				<SignIn />
@@ -35,6 +35,7 @@ export default async function Home() {
 					<ErrorTest />
 				</Suspense>
 				<SignOut />
+				<Text>{cookieStore.get("error")?.value}</Text>
 			</Stack>
 		</Container>
 	);
