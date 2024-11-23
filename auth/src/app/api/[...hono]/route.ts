@@ -5,9 +5,10 @@ import { handle } from "hono/vercel";
 import { object, string } from "zod";
 
 const app = new OpenAPIHono().basePath("/api");
-app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
-	type: "http",
-	scheme: "bearer",
+app.openAPIRegistry.registerComponent("securitySchemes", "cookieAuth", {
+	type: "apiKey",
+	in: "cookie",
+	name: "authjs.session-token",
 });
 const route = app.openapi(
 	createRoute({
@@ -21,8 +22,9 @@ const route = app.openapi(
 				description: "",
 			},
 		},
+		security: [{ cookieAuth: [] }],
 	}),
-	async ({ json, req }) => {
+	async ({ json }) => {
 		const session = await auth();
 		const email = session?.user?.email;
 		if (!email) {
