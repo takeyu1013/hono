@@ -2,9 +2,7 @@ import { auth } from "@/lib/auth";
 import { Container, Stack, Text } from "@mantine/core";
 import { hc } from "hono/client";
 import { cookies } from "next/headers";
-import { Suspense } from "react";
 
-import { ErrorTest } from "@/component/error-test";
 import { SignIn } from "@/component/sign-in";
 import { SignOut } from "@/component/sign-out";
 import { SignUp } from "@/component/sign-up";
@@ -31,11 +29,7 @@ export default async function Home() {
 				<Text>{message}</Text>
 				<SignUp />
 				<SignIn />
-				<Suspense fallback={<Text>Loading...</Text>}>
-					<ErrorTest />
-				</Suspense>
 				<SignOut />
-				<Text>{cookieStore.get("error")?.value}</Text>
 			</Stack>
 		</Container>
 	);
