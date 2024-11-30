@@ -2,9 +2,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcrypt";
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { object, string } from "zod";
+import { ZodError } from "zod";
 
 import { prisma } from "./prisma";
+import { signInSchema } from "./zod";
 
 export const authConfig = {
 	adapter: PrismaAdapter(prisma),
@@ -15,31 +16,29 @@ export const authConfig = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				if (!credentials) {
-					return null;
+				try {
+					const { email, password } =
+						await signInSchema.parseAsync(credentials);
+					const user = await prisma.user.findFirst({
+						where: { email },
+					});
+					if (!user) {
+						return null;
+					}
+					const isValidPassword = await compare(
+						password,
+						user.passwordDigest ?? "",
+					);
+					if (!isValidPassword) {
+						return null;
+					}
+					return user;
+				} catch (error) {
+					if (error instanceof ZodError) {
+						return null;
+					}
+					throw error;
 				}
-				const { data, success } = await object({
-					email: string().email(),
-					password: string().min(6),
-				}).safeParseAsync(credentials);
-				if (!success) {
-					return null;
-				}
-				const { email, password } = data;
-				const user = await prisma.user.findFirst({
-					where: { email },
-				});
-				if (!user) {
-					return null;
-				}
-				const isValidPassword = await compare(
-					password,
-					user.passwordDigest ?? "",
-				);
-				if (!isValidPassword) {
-					return null;
-				}
-				return user;
 			},
 		}),
 	],
