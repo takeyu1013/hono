@@ -1,17 +1,15 @@
-import "dotenv/config";
 import { drizzle } from "drizzle-orm/libsql";
 
-import { usersTable } from "./schema";
+import { users } from "./schema";
 
 const db = drizzle(process.env.DB_FILE_NAME || "");
 
 (async () => {
-	const user: typeof usersTable.$inferInsert = {
+	const user: typeof users.$inferInsert = {
 		name: "John",
-		age: 30,
 		email: "john@example.com",
 	};
 
-	await db.insert(usersTable).values(user);
+	await db.insert(users).values(user);
 	console.log("New user created!");
 })();
